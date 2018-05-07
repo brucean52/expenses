@@ -1,0 +1,11 @@
+.table-contain, .add-form, .container {
+    display: inline-block;
+}
+
+.table-contain{
+    width: 70%
+}
+
+.add-form{
+    width: 25%;
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html> 
+    <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="initial-scale=1, user-scalable=no">
+</head>
+
+<body>
+    <div class="container">
+        <div class="add-form mt-5">
+            <h3 class="ml-3">Add Expense</h3>
+
+            <form action="" class="form-group">
+                <div class="input-group">
+                    <input id="date" type="date" class="form-control">
+                </div>
+                <div class="label-input">
+                    <input id="description" class="form-control" type="text" placeholder="Description">
+                </div>
+                <div class="label-input">
+                    <input id="amount" class="form-control" type="number" min="0.01" step="0.01" placeholder="Amount" />
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="form-response"></div>
+            </form>
+        </div>
+        <div class="table-contain">
+            <h1>Expenses</h1>
+            <table class="table">
+                <thead>
+                    <tr class="tr tableHead">
+                        <th class="th">Date</th>
+                        <th class="th">Description</th>
+                        <th class="th">Amount</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
