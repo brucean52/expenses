@@ -1,6 +1,7 @@
 $(document).ready(initializeApp);
-
-expenseObj = {};
+var dataPull;
+var expenseObj = {};
+var expenseArr = [];
 
 function initializeApp() {
     addClickHandlersToElements();
@@ -19,30 +20,17 @@ function handleSubmitClicked(event) {
 function addExpense() {
     var date = $('#date').val();
     var description = $('#description').val();
-    var amount = $('#amount').val();
-    console.log('date', date);
-    console.log('description', description);
-    console.log('amount', amount);
+    var amount = parseInt($('#amount').val());
+    var tax = amount * .2;
+    var totalAmount = amount + tax;
 
-//    if (!/\S/.test(firstName)) {
-//        $( ".form-response" ).text( "Please enter a valid first name" );
-//    } else if(!/\S/.test(lastName)){
-//        $( ".form-response" ).text( "Please enter a valid last name" );
-//    } else if(phone === "" && email === ""){
-//        $( ".form-response" ).text( "Enter either a phone or email" );
-//    } else if(phone !== "" && phoneRegex.test(phone) === false){
-//        $( ".form-response" ).text( "Please enter a valid phone" );
-//    } else if(email !== "" && emailRegex.test(email) === false){
-//        $( ".form-response" ).text( "Please enter a valid email" );
-//    } else {
-        expenseObj = {
-            date: date,
-            description: description,
-            amount: amount
-        };
-        addToServer(expenseObj);
-        //$( ".form-response" ).text( "" );
-    //}
+    expenseObj = {
+        date: date,
+        description: description,
+        amount: totalAmount
+    };
+    
+    addToServer(expenseObj);
 }
 
 function addToServer(expense) {
@@ -58,4 +46,91 @@ function addToServer(expense) {
         success: successfulAdd,
         error: errorFromServer
     });
+}
+
+function successfulAdd(data) {
+    if (data.success === true) {
+        expenseArr.push(expenseObj);
+        updateExpenseList('add');
+    }
+}
+
+
+function renderContactOnDom(indexNum) {
+    var newRow = $("<tr>", {
+        class: "tr"
+    });
+    var newDate = $("<td>", {
+        class: "td",
+        text: expenseArr[indexNum].date
+    });
+    var newDescription = $("<td>", {
+        class: "td",
+        text: expenseArr[indexNum].description
+    });
+    var newAmount = $("<td>", {
+        class: "td",
+        text: expenseArr[indexNum].amount
+    });
+
+
+
+    $('tbody').append(newRow);
+    $('tbody > tr:last-child').append(newDate);
+    $('tbody > tr:last-child').append(newDescription);
+    $('tbody > tr:last-child').append(newAmount);
+
+}
+
+function pullFromServer() {
+    $.ajax({
+        dataType: 'json',
+        url: 'php/read.php',
+        method: 'post',
+        success: successfulPull,
+        error: errorFromServer
+
+    });
+
+}
+
+function successfulPull(data) {
+    dataPull = data.data;
+    console.log(dataPull);
+    var pullObj = {};
+    for (var j = 0; j < dataPull.length; j++) {
+
+        pullObj = {
+            date: dataPull[j].date,
+            description: dataPull[j].description,
+            amount: dataPull[j].amount
+        };
+        expenseArr.push(pullObj);
+    }
+    updateExpenseList();
+}
+
+function updateExpenseList(string) {
+    var length = expenseArr.length - 1;
+    if (expenseArr.length === 0) {
+        $("tbody").text("No Contacts Available!");
+    }
+
+    switch (string) {
+        case 'add':
+            if (expenseArr.length === 1) {
+                $("tbody").text("");
+            }
+            renderContactOnDom(length);
+            break;
+        default:
+            for (var i = 0; i < expenseArr.length; i++) {
+                renderContactOnDom(i);
+            }
+            break;
+    }
+}
+
+function errorFromServer(error) {
+    console.log('Error', error);
 }

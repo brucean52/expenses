@@ -1,9 +1,10 @@
-.table-contain, .add-form, .container {
+.table-contain, .add-form {
     display: inline-block;
 }
 
 .table-contain{
-    width: 70%
+    width: 70%;
+    vertical-align: top;
 }
 
 .add-form{
